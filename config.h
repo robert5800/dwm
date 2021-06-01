@@ -26,13 +26,13 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            0,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-	{ "Brave-browser",  NULL,       NULL,       1 << 1,       0,           -1 },
-	{ "Microsoft Teams - Preview",  NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "discord",  NULL,       NULL,       1 << 2,       0,           -1 },
-	{ "Steam",  NULL,       NULL,       1 << 3,       0,           -1 },
+	/* class                          instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",                         NULL,       NULL,       0,            0,           -1 },
+	{ "Firefox",                      NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "Brave-browser",                NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "Microsoft Teams - Preview",    NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "discord",                      NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "Steam",                        NULL,       NULL,       1 << 3,       0,           -1 },
 };
 
 /* layout(s) */
@@ -67,44 +67,48 @@ static const char *downvol[]  = { "/usr/bin/pactl", "set-sink-volume", "0", "-5%
 static const char *mutevol[]  = { "/usr/bin/pactl", "set-sink-mute",   "0", "toggle",  NULL };
 static const char *upbright[] = { "/usr/bin/brightnessctl", "set",   "+2%",           NULL };
 static const char *downbright[] = { "/usr/bin/brightnessctl", "set",   "2%-",           NULL };
+static const char *nobright[] = { "/usr/bin/brightnessctl", "set",   "0%",           NULL };
+static const char *bright[] = { "/usr/bin/brightnessctl", "set",   "80%",           NULL };
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_Up,     spawn,          {.v = upvol } },
-	{ MODKEY,                       XK_Down,   spawn,          {.v = downvol } },
-	{ MODKEY,                       XK_Delete,   spawn,          {.v = mutevol } },
-	{ MODKEY,                       XK_Left,   spawn,          {.v = downbright } },
+	/* modifier                     key         function        argument */
+	{ MODKEY,                       XK_p,       spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_Up,      spawn,          {.v = upvol } },
+	{ MODKEY,                       XK_Down,    spawn,          {.v = downvol } },
+	{ MODKEY,                       XK_Delete,  spawn,          {.v = mutevol } },
+	{ MODKEY,                       XK_Left,    spawn,          {.v = downbright } },
 	{ MODKEY,                       XK_Right,   spawn,          {.v = upbright } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_v,       spawn,          {.v = nobright } },
+	{ MODKEY|ShiftMask,             XK_v,       spawn,          {.v = bright } },
+	{ MODKEY,                       XK_Return,  spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_w,       spawn,          SHCMD("brave-browser") },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_b,       togglebar,      {0} },
+	{ MODKEY,                       XK_j,       focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,       focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_i,       incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,       incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_h,       setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,       setmfact,       {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_Return,  zoom,           {0} },
+	{ MODKEY,                       XK_Tab,     view,           {0} },
+	{ MODKEY,                       XK_q,       killclient,     {0} },
+	{ MODKEY,                       XK_t,       setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_f,       setlayout,      {.v = &layouts[1]} },
+	{ MODKEY,                       XK_m,       setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_space,   setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_space,   togglefloating, {0} },
+	{ MODKEY,                       XK_0,       view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,       tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_comma,   focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period,  focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,   tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,  tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
 	TAGKEYS(                        XK_4,                      3)
 	TAGKEYS(                        XK_5,                      4)
-	{ MODKEY|ShiftMask,             XK_r,      quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_r,       quit,           {0} },
 };
 
 /* button definitions */
